@@ -1,6 +1,8 @@
 # Maze Generator
 This is a maze generator based on **Kruskal's Algorithm**. The algorithm ensures that all cell in the maze is reachable. Every cell is connected to each other with **one and only one** path.
 
+**Author**: Gang Yi Khor
+
 ## How to Setup
 ```bash
 npm install
