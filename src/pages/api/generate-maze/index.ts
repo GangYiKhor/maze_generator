@@ -1,11 +1,23 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { generateMazeServices } from "./generate-maze-services";
+import { generateMazeStreamServices } from "./generate-maze-stream-services";
+import { parseQuery } from "./utils";
 
-async function completeImageHandler(req: NextApiRequest, res: NextApiResponse) {
+async function generateMazeHandler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === "GET") {
 		try {
-			const result = generateMazeServices(req);
-			res.status(200).json(result);
+			const size = parseQuery(req);
+			if (req.query.stream === "true") {
+				res.setHeader("Connection", "keep-alive");
+				res.setHeader("Content-Encoding", "none");
+				res.setHeader("Cache-Control", "no-cache, no-transform");
+				res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
+				generateMazeStreamServices(size, res);
+				res.status(200).end();
+			} else {
+				const result = generateMazeServices(size);
+				res.status(200).json(result);
+			}
 		} catch (err) {
 			if (process.env.NODE_ENV === "development") {
 				console.error(err);
@@ -21,4 +33,4 @@ async function completeImageHandler(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-export default completeImageHandler;
+export default generateMazeHandler;

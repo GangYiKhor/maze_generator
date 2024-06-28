@@ -1,18 +1,17 @@
+import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import React from "react";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<React.Fragment>
+		<ThemeProvider attribute="class">
 			<Head>
 				<title>Maze Generator</title>
+				<link rel="icon" href="./icon.ico" />
 			</Head>
-			<body>
-				<Component {...pageProps} />
-			</body>
-		</React.Fragment>
+			<Component {...pageProps} />
+		</ThemeProvider>
 	);
 }
 
